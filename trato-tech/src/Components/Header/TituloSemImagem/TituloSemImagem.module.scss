@@ -1,0 +1,18 @@
+.container {
+  align-items: center !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.titulo {
+  color: white !important;
+  font-size: 60px;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.descricao {
+  color: white !important;
+  font-size: 25px;
+  font-weight: 400;
+}
