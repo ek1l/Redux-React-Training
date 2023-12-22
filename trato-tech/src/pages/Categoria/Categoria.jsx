@@ -1,19 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from '../../Components/Header/Header';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import styles from './Categoria.module.scss';
 import Item from '../../Components/Item/Item';
 import Button from '../../Components/Button/Button';
 import { useNavigate } from 'react-router-dom';
+import { buscarItens } from '../../store/reducers/itens';
+
 const Categoria = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { nomeCategoria } = useParams();
   const { categoria, itens } = useSelector((state) => {
     const regexp = new RegExp(state.busca, 'i');
     return {
       categoria: state.categorias.find(
-        (categoria) => categoria.id === nomeCategoria,
+        ((categoria) => categoria.id === nomeCategoria) || {},
       ),
       itens: state.itens.filter(
         (item) => item.categoria === nomeCategoria && item.titulo.match(regexp),
@@ -34,8 +37,10 @@ const Categoria = () => {
         />
       </Header>
       <div className={styles.itens}>
-        {itens?.map((item) => (
-          <Item key={item.id} {...item} />
+        {itens?.map((item, index) => (
+          <div key={index}>
+            <Item key={item.id} {...item} />
+          </div>
         ))}
       </div>
     </div>
