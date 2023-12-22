@@ -1,11 +1,17 @@
-import React from 'react'
+import React, { forwardRef } from 'react';
+import styles from './Input.module.scss';
 
-const Input = () => {
+const Input = ({ value, onChange, placeholder, ...outrosProps }, ref) => {
   return (
-    <div>
-      
-    </div>
-  )
-}
+    <input
+      value={value}
+      placeholder={placeholder}
+      onChange={onChange}
+      className={styles.input}
+      ref={ref}
+      {...outrosProps}
+    />
+  );
+};
 
-export default Input
+export default forwardRef(Input);

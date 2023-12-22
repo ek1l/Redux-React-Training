@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import styles from './Item.module.scss';
 import {
   AiOutlineHeart,
@@ -7,12 +7,18 @@ import {
   AiFillPlusCircle,
   AiOutlineCheck,
   AiFillEdit,
+  AiFillCloseCircle,
 } from 'react-icons/ai';
 import { FaCartPlus } from 'react-icons/fa';
-import { mudarFavorito } from '../../store/reducers/itens';
+import {
+  deletarItem,
+  mudarFavorito,
+  mudarItem,
+} from '../../store/reducers/itens';
 import { useDispatch, useSelector } from 'react-redux';
 import { mudarCarrinho, mudarQuantidade } from '../../store/reducers/carrinho';
 import classNames from 'classnames';
+import Input from '../Input/Input';
 
 const iconeProps = {
   size: 24,
@@ -46,7 +52,10 @@ const Item = (props) => {
         <AiOutlineCheck
           {...iconeProps}
           className={styles['item-acao']}
-          onClick={() => setModoDeEdicao(false)}
+          onClick={() => {
+            setModoDeEdicao(false);
+            dispatch(mudarItem({ id, item: { titulo: novoTitulo } }));
+          }}
         />
       ) : (
         <AiFillEdit
@@ -63,17 +72,18 @@ const Item = (props) => {
         [styles.itemNoCarrinho]: carrinho,
       })}
     >
+      <AiFillCloseCircle
+        className={`${styles['item-acao']} ${styles['item-deletar']}`}
+        onClick={() => dispatch(deletarItem(id))}
+        {...iconeProps}
+      />
       <div className={styles['item-imagem']}>
         <img src={foto} alt={titulo} />
       </div>
       <div className={styles['item-descricao']}>
         <div className={styles['item-titulo']}>
           {modoDeEdicao ? (
-            <input
-              type="text"
-              value={novoTitulo}
-              onChange={(e) => setNovoTitulo(e.target.value)}
-            />
+            <Input onChange={(e) => setNovoTitulo(e.target.value)} />
           ) : (
             <h2>{titulo}</h2>
           )}
@@ -133,4 +143,4 @@ const Item = (props) => {
   );
 };
 
-export default Item;
+export default memo(Item);
