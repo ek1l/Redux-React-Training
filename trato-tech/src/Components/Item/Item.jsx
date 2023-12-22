@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './Item.module.scss';
 import {
   AiOutlineHeart,
   AiFillHeart,
   AiFillMinusCircle,
   AiFillPlusCircle,
+  AiOutlineCheck,
+  AiFillEdit,
 } from 'react-icons/ai';
 import { FaCartPlus } from 'react-icons/fa';
 import { mudarFavorito } from '../../store/reducers/itens';
@@ -25,6 +27,8 @@ const quantidadeProps = {
 const Item = (props) => {
   const { id, titulo, foto, preco, descricao, favorito, carrinho, quantidade } =
     props;
+  const [modoDeEdicao, setModoDeEdicao] = useState(false);
+  const [novoTitulo, setNovoTitulo] = useState(titulo);
   const estaNoCarrinho = useSelector((state) =>
     state.carrinho.some((itemNoCarrinho) => itemNoCarrinho.id === id),
   );
@@ -36,6 +40,23 @@ const Item = (props) => {
   const resolverCarrinho = () => {
     dispatch(mudarCarrinho(id));
   };
+  const ComponentModoDeEdicao = () => (
+    <>
+      {modoDeEdicao ? (
+        <AiOutlineCheck
+          {...iconeProps}
+          className={styles['item-acao']}
+          onClick={() => setModoDeEdicao(false)}
+        />
+      ) : (
+        <AiFillEdit
+          {...iconeProps}
+          className={styles['item-acao']}
+          onClick={() => setModoDeEdicao(true)}
+        />
+      )}
+    </>
+  );
   return (
     <div
       className={classNames(styles.item, {
@@ -47,7 +68,15 @@ const Item = (props) => {
       </div>
       <div className={styles['item-descricao']}>
         <div className={styles['item-titulo']}>
-          <h2>{titulo}</h2>
+          {modoDeEdicao ? (
+            <input
+              type="text"
+              value={novoTitulo}
+              onChange={(e) => setNovoTitulo(e.target.value)}
+            />
+          ) : (
+            <h2>{titulo}</h2>
+          )}
           <p>{descricao}</p>
         </div>
         <div className={styles['item-acoes']}>
@@ -88,12 +117,15 @@ const Item = (props) => {
               />
             </div>
           ) : (
-            <FaCartPlus
-              {...iconeProps}
-              color={estaNoCarrinho ? '#1875e8' : iconeProps.color}
-              className={styles['item-acao']}
-              onClick={resolverCarrinho}
-            />
+            <>
+              <FaCartPlus
+                {...iconeProps}
+                color={estaNoCarrinho ? '#1875e8' : iconeProps.color}
+                className={styles['item-acao']}
+                onClick={resolverCarrinho}
+              />
+              <ComponentModoDeEdicao />
+            </>
           )}
         </div>
       </div>

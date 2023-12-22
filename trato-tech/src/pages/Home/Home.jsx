@@ -4,6 +4,7 @@ import Header from '../../Components/Header/Header';
 import Relogio from '../../assets/inicial.png';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import Button from '../../Components/Button/Button';
 const Home = () => {
   const navigate = useNavigate();
   const categorias = useSelector((state) => state.categorias);
@@ -14,7 +15,9 @@ const Home = () => {
         descricao="Compre diversos tipos de produtos no melhor site do Brasil"
         imagem={Relogio}
         classname={styles.header}
-      />
+      >
+        <Button title="Quero anunciar" onClick={() => navigate('/anuncie')} />
+      </Header>
       <div className={styles.categorias}>
         <div className={styles['categorias-title']}>
           <h1>Categorias</h1>

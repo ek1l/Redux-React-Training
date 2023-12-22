@@ -4,9 +4,11 @@ import Header from '../../Components/Header/Header';
 import { useSelector } from 'react-redux';
 import styles from './Categoria.module.scss';
 import Item from '../../Components/Item/Item';
+import Button from '../../Components/Button/Button';
+import { useNavigate } from 'react-router-dom';
 const Categoria = () => {
+  const navigate = useNavigate();
   const { nomeCategoria } = useParams();
-
   const { categoria, itens } = useSelector((state) => {
     const regexp = new RegExp(state.busca, 'i');
     return {
@@ -25,7 +27,12 @@ const Categoria = () => {
         titulo={categoria.nome}
         descricao={categoria.descricao}
         imagem={categoria.header}
-      />
+      >
+        <Button
+          title="Quero anunciar"
+          onClick={() => navigate(`/anuncie/${nomeCategoria}`)}
+        />
+      </Header>
       <div className={styles.itens}>
         {itens?.map((item) => (
           <Item key={item.id} {...item} />

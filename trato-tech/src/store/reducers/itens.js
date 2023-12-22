@@ -25,7 +25,6 @@ import caixaSom from '../../assets/itens/caixa-som.png';
 import caixaSomBluetooth from '../../assets/itens/caixa-som-bluetooth.png';
 import miniSystem from '../../assets/itens/mini-system.png';
 import tablet from '../../assets/itens/tablet.png';
-import Item from '../../Components/Item/Item';
 
 const initialState = [
   {
@@ -285,12 +284,15 @@ const itensSlice = createSlice({
   initialState,
   reducers: {
     mudarFavorito: (state, { payload }) => {
-      state = state.map((item) => {
+      state.map((item) => {
         if (item.id === payload) item.favorito = !item.favorito;
       });
+    },
+    cadastrarItem: (state, { payload }) => {
+      state.push({ ...payload, id: uuid() });
     },
   },
 });
 
-export const { mudarFavorito } = itensSlice.actions;
+export const { mudarFavorito, cadastrarItem } = itensSlice.actions;
 export default itensSlice.reducer;

@@ -12,6 +12,18 @@
     flex-direction: column;
     justify-content: space-between;
     flex: 1;
+    input {
+      border: none;
+      border-radius: 5px;
+      font-size: 18px;
+      outline: #1a95f0;
+      transition: 0.2s ease-in-out;
+      width: 100%;
+      padding: 5px;
+      &:focus {
+        outline: 2px solid #1a95f0;
+      }
+    }
   }
   &-titulo {
     padding: 16px 16px 0 16px;
@@ -26,6 +38,12 @@
 
   &-imagem {
     margin: 0 auto;
+    height: 160px;
+    width: 335px;
+    object-fit: cover;
+    img {
+      height: 100%;
+    }
   }
 
   &-info {
