@@ -1,15 +1,13 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from '../../Components/Header/Header';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import styles from './Categoria.module.scss';
 import Item from '../../Components/Item/Item';
 import Button from '../../Components/Button/Button';
 import { useNavigate } from 'react-router-dom';
-import { buscarItens } from '../../store/reducers/itens';
 
 const Categoria = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { nomeCategoria } = useParams();
   const { categoria, itens } = useSelector((state) => {

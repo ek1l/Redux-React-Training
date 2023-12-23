@@ -25,7 +25,7 @@ const categoriasSlice = createSlice({
         });
         return payload;
       })
-      .addCase(buscarCategorias.pending, (_, { payload }) => {
+      .addCase(buscarCategorias.pending, (_, _) => {
         toast({
           title: 'Carregando...!',
           description: 'Categorias carregadas com sucesso!',
