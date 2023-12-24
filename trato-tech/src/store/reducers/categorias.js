@@ -20,6 +20,9 @@ const categoriasSlice = createSlice({
     adicionarTodasCategorias: (state, { payload }) => {
       return payload;
     },
+    adicionarUmaCategoria: (state, { payload }) => {
+      state.push(payload);
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(resetarCarrinho.type, () => {
@@ -34,5 +37,6 @@ const categoriasSlice = createSlice({
   },
 });
 
-export const { adicionarTodasCategorias } = categoriasSlice.actions;
+export const { adicionarTodasCategorias, adicionarUmaCategoria } =
+  categoriasSlice.actions;
 export default categoriasSlice.reducer;

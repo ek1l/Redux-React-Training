@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Header from '../../Components/Header/Header';
 import { useSelector, useDispatch } from 'react-redux';
 import styles from './Anuncie.module.scss';
@@ -7,6 +7,10 @@ import { useForm } from 'react-hook-form';
 import { cadastrarItem } from '../../store/reducers/itens';
 import { useParams } from 'react-router-dom';
 import Input from '../../Components/Input/Input';
+import {
+  carregarCategorias,
+  carregarUmaCategoria,
+} from '../../store/reducers/categorias';
 const Anuncie = () => {
   const { nomeCategoria = '' } = useParams();
   const dispatch = useDispatch();
@@ -21,6 +25,11 @@ const Anuncie = () => {
   const cadastrar = (formData) => {
     dispatch(cadastrarItem(formData));
   };
+  useEffect(() => {
+    dispatch(
+      nomeCategoria ? carregarUmaCategoria(nomeCategoria) : carregarCategorias,
+    );
+  }, [dispatch, nomeCategoria]);
   return (
     <div className={styles.container}>
       <Header

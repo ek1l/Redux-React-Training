@@ -1,20 +1,19 @@
 import categoriasService from '../../services/categorias';
 import {
   adicionarTodasCategorias,
+  adicionarUmaCategoria,
   carregarCategorias,
   carregarUmaCategoria,
 } from '../reducers/categorias';
 import { createListenerMiddleware } from '@reduxjs/toolkit';
-import { createStandaloneToast } from '@chakra-ui/toast';
 import criarTarefa from './utils/criarTarefa';
 
-const { toast } = createStandaloneToast();
-export const listener = createListenerMiddleware();
+export const categoriasListener = createListenerMiddleware();
 
-listener.startListening({
+categoriasListener.startListening({
   actionCreator: carregarCategorias,
   effect: async (action, { dispatch, fork, unsubscribe }) => {
-    await criarTarefa({
+    const resposta = await criarTarefa({
       fork,
       dispatch,
       action: adicionarTodasCategorias,
@@ -23,13 +22,30 @@ listener.startListening({
       textoSucesso: 'Categorias carregadas com sucesso!',
       textoErro: 'Falha ao chamar API!',
     });
-    unsubscribe();
+    if (resposta.status === 'ok') {
+      unsubscribe();
+    }
   },
 });
 
-listener.startListening({
+categoriasListener.startListening({
   actionCreator: carregarUmaCategoria,
-  effect: async () => {
-    console.log('Carregar apenas uma categoria');
+  effect: async (action, { fork, dispatch, getState, unsubscribe }) => {
+    const { categorias } = getState();
+    const nomeCategoria = action.payload;
+    const categoriaCarregada = categorias.some(
+      (categoria) => categoria.id === nomeCategoria,
+    );
+    if (categoriaCarregada) return;
+    if (categorias.length === 5) return unsubscribe();
+    await criarTarefa({
+      fork,
+      dispatch,
+      action: adicionarUmaCategoria,
+      busca: () => categoriasService.buscarUmaCategoria(nomeCategoria),
+      textoCarregando: `Carregando as categoria ${nomeCategoria}`,
+      textoSucesso: `Categoria ${nomeCategoria} com sucesso!`,
+      textoErro: `Erro na busca da categoria ${nomeCategoria}`,
+    });
   },
 });

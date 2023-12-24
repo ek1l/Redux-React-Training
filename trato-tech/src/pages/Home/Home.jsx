@@ -5,7 +5,6 @@ import Relogio from '../../assets/inicial.png';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Button from '../../Components/Button/Button';
-import { buscarItens } from '../../store/reducers/itens';
 import { carregarCategorias } from '../../store/reducers/categorias';
 
 const Home = () => {
@@ -15,9 +14,7 @@ const Home = () => {
 
   useEffect(() => {
     dispatch(carregarCategorias());
-    dispatch(buscarItens());
-    buscarItens();
-  }, [dispatch, buscarItens]);
+  }, [dispatch]);
   return (
     <div className={styles.separador}>
       <Header
